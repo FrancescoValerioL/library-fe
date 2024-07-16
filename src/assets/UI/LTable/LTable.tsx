@@ -2,18 +2,16 @@ import { ReactNode } from "react";
 
 const LTable = (props: TableProps) => {
   return (
-    <div className="table-responsive">
-      <table className={"table table-striped table-hover table-" + props.variant}>
-        <thead>
-          <tr>
-            {props.columns.map((column, idx) => (
-              <th key={idx}>{column}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>{props.children}</tbody>
-      </table>
-    </div>
+    <table className={"table table-striped table-hover table-bordered align-middle table-" + props.variant}>
+      <thead>
+        <tr>
+          {props.columns.map((column, idx) => (
+            <th key={idx}>{column}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>{props.children}</tbody>
+    </table>
   );
 };
 export default LTable;
