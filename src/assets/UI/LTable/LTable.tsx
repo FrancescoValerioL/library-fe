@@ -9,15 +9,22 @@ const LTable = (props: TableProps, { onClickOrder }: any) => {
           <tr>
             {props.columns.map((column, idx) => (
               <th key={idx}>
-                <div className="d-flex align-items-center justify-content-between">
+                <div className="d-flex align-items-center justify-content-between align-middle">
                   <div className="column-text">{column}</div>
-                  <div className="d-flex flex-column align-items-center">
-                    <i className="bi bi-caret-up-fill" onClick={() => props.onClickOrder(column && column, "up")}></i>
-                    <i
-                      className="bi bi-caret-down-fill"
-                      onClick={() => props.onClickOrder(column && column, "down")}
-                    ></i>
-                  </div>
+                  {column !== "Description" && column !== "Actions" ? (
+                    <div className="d-flex flex-column align-items-center">
+                      <i className="bi bi-caret-up-fill" onClick={() => props.onClickOrder(column && column, "up")}></i>
+                      <i
+                        className="bi bi-caret-down-fill"
+                        onClick={() => props.onClickOrder(column && column, "down")}
+                      ></i>
+                    </div>
+                  ) : (
+                    <div className="d-flex flex-column align-items-center">
+                      <i className="bi bi-slash"></i>
+                      <i className="bi bi-slash"></i>
+                    </div>
+                  )}
                 </div>
               </th>
             ))}

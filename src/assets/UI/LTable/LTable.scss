@@ -18,12 +18,15 @@ td:last-child {
     bottom: 0;
     z-index: 1;
 }
-
+.bi-slash {
+    font-size: 10px;
+    margin: 0.5px 0; /* Spaziatura verticale tra le icone */
+}
 .bi-caret-up-fill,
 .bi-caret-down-fill {
     font-size: 10px;
     cursor: pointer;
-    margin: 1px 0; /* Spaziatura verticale tra le icone */
+    margin: 0.5px 0; /* Spaziatura verticale tra le icone */
 }
 
 .column-text {
