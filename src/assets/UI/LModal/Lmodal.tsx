@@ -18,17 +18,90 @@ const LModal = (props: ModalProps) => {
           <div className="modal-body">
             <div className="container text-center">
               <div className="row">
-                <div className="col">{props.data && props.data.author}</div>
-                <div className="col">{props.data && props.data.shortDescription}</div>
-                <div className="col">{props.data && props.data.year}</div>
+                <div className="col">
+                  <div className="container text-center">
+                    <div className="row">
+                      <div className="col">
+                        <strong>Author</strong>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col">{props.data && props.data.author}</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col">
+                  <div className="container text-center">
+                    <div className="row">
+                      <div className="col">
+                        <strong>Published</strong>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col">{props.data && props.data.year}</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="col">
+                  <div className="container text-center">
+                    <div className="row">
+                      <div className="col">
+                        <strong>Pages</strong>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col">{props.data && props.data.pages}</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="row"></div>
+                <div className="col">
+                  <div className="container text-center">
+                    <div className="row">
+                      <div className="col">
+                        <strong>Description</strong>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col">{props.data && props.data.description}</div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div className="row">
-                <div className="col">{props.data && props.data.description}</div>
-              </div>
-              <div className="row">
-                <div className="col">{props.data && props.data.pages}</div>
-                <div className="col">{props.data && props.data.status}</div>
-                <div className="col">{props.data && props.data.packed ? "packed" : "not packed"}</div>
+                <div className="col">
+                  <div className="container text-center">
+                    <div className="row">
+                      <div className="col">
+                        <strong>Read</strong>
+                      </div>
+                    </div>
+                    <div className="row">
+                      {props.data && props.data.status === true ? (
+                        <i className="bi bi-check-circle text-success" style={{ fontSize: "1.5rem" }}></i>
+                      ) : (
+                        <i className="bi bi-x-square text-danger" style={{ fontSize: "1.5rem" }}></i>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className="col">
+                  <div className="container text-center">
+                    <div className="row">
+                      <div className="col">
+                        <strong>Packed</strong>
+                      </div>
+                    </div>
+                    <div className="row">
+                      {props.data && props.data.packed === true ? (
+                        <i className="bi bi-check-circle text-success" style={{ fontSize: "1.5rem" }}></i>
+                      ) : (
+                        <i className="bi bi-x-square text-danger" style={{ fontSize: "1.5rem" }}></i>
+                      )}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -54,7 +127,7 @@ interface ModalProps {
     pages: number;
     shortDescription: string;
     description: string;
-    status: string;
+    status: boolean;
     packed: boolean;
   };
 }
