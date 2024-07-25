@@ -18,3 +18,14 @@ td:last-child {
     bottom: 0;
     z-index: 1;
 }
+
+.bi-caret-up-fill,
+.bi-caret-down-fill {
+    font-size: 10px;
+    cursor: pointer;
+    margin: 1px 0; /* Spaziatura verticale tra le icone */
+}
+
+.column-text {
+    margin-right: 10px; /* Regola questa proprietà per lo spazio tra il testo e le icone */
+}

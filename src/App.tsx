@@ -28,10 +28,10 @@ function App() {
 
   const notifyError = () => (toastId.current = Toast.errorToast("Success", "colored", 3000));
 
-  const retrieveData = () => {
+  const retrieveData = (value: string, direction: string) => {
     notifySuccess();
     // Modifica: Usa template literals per costruire l'URL
-    fetch(`http://localhost:8080/get?pageSize=${pageSize}&page=${currentPage}`, {
+    fetch(`http://localhost:8080/get?pageSize=${pageSize}&page=${currentPage}&value=${value}&direction=${direction}`, {
       method: "GET",
     })
       .then((response) => response.json())
@@ -50,7 +50,7 @@ function App() {
   };
 
   useEffect(() => {
-    retrieveData();
+    retrieveData("_id", "down");
   }, [currentPage, pageSize]); // Modifica: Rimuovi useEffect duplicato, combina tutto in uno
 
   const setPagination = (pageAmount: number) => {
@@ -105,9 +105,18 @@ function App() {
     setPageSize(Number(e.target.value)); // Modifica: Assicurati che il valore sia un numero
   };
 
+  const test = (value: string, direction: string) => {
+    retrieveData(value, direction);
+  };
+
   return (
     <div className="App" style={{ overflowX: "scroll" }}>
-      <LTable columns={columns}>
+      <LTable
+        columns={columns}
+        onClickOrder={(value: string, direction: string) => {
+          test(value, direction);
+        }}
+      >
         <tbody>
           {rows.length > 0 &&
             rows.map((row: any, idx: Key) => (
@@ -166,8 +175,8 @@ function App() {
       </LTable>
       <div className="container-fluid">
         <div className="row align-items-start justify-content-start">
-          <div className="col-1">Total: {total}</div>
-          <div className="col-9">
+          <div className="col-2">Total: {total}</div>
+          <div className="col-10">
             <nav aria-label="Page navigation example">
               <ul className="pagination">
                 {pages.map((page) => page)}
@@ -185,23 +194,21 @@ function App() {
               </ul>
             </nav>
           </div>
-          <div className="col-2">
-            <LButton
-              variant="outline-primary"
-              type="button"
-              toggle="modal"
-              target="#createModal"
-              text="Create New"
-              onClick={() => {
-                selectRow(null);
-              }}
-            />
-          </div>
         </div>
       </div>
-      <LEditModal id="createModal" labelledby="createModalLabel" data={selected} onConfirm={retrieveData} />
+      <LEditModal
+        id="createModal"
+        labelledby="createModalLabel"
+        data={selected}
+        onConfirm={() => retrieveData("_id", "down")}
+      />
       <LModal id="exampleModal" labelledby="exampleModalLabel" data={selected} />
-      <LDeleteModal id="deleteModal" labelledby="deleteModalLabel" _id={selected?._id} onConfirm={retrieveData} />
+      <LDeleteModal
+        id="deleteModal"
+        labelledby="deleteModalLabel"
+        _id={selected?._id}
+        onConfirm={() => retrieveData("_id", "down")}
+      />
     </div>
   );
 }
