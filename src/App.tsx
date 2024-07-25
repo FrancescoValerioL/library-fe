@@ -8,6 +8,7 @@ import LDeleteModal from "./assets/UI/LDeleteModal/LDeleteModal";
 import { Bounce, Slide, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import * as Toast from "./services/Toast";
+import LChart from "./assets/UI/LChart/LChart";
 
 function App() {
   const columns = ["ID", "Author", "Title", "Year", "Pages", "Description", "Status", "Packed", "Actions"];
@@ -18,6 +19,8 @@ function App() {
   const [selected, setSelected] = useState<any>();
   const [rows, setRows] = useState<any[]>([]);
   const [total, setTotal] = useState<number>(0);
+  const [countRead, setCountRead] = useState<number>(0);
+  const [countPacked, setCountPacked] = useState<number>(0);
   const toastId = useRef<any>();
 
   const selectRow = (row: any) => {
@@ -30,6 +33,8 @@ function App() {
 
   const retrieveData = (value: string, direction: string) => {
     notifySuccess();
+    setCountPacked(0);
+    setCountRead(0);
     // Modifica: Usa template literals per costruire l'URL
     fetch(`http://localhost:8080/get?pageSize=${pageSize}&page=${currentPage}&value=${value}&direction=${direction}`, {
       method: "GET",
@@ -39,6 +44,10 @@ function App() {
         setRows(data.data);
         setPageAmount(data.pageAmount);
         setTotal(data.length);
+        data.data.forEach((book: any) => {
+          if (book.packed === true) setCountPacked((count) => count + 1);
+          if (book.status === true) setCountRead((count) => count + 1);
+        });
         // Modifica: Chiama setPagination con il nuovo valore di pageAmount
         setPagination(data.pageAmount);
         toast.dismiss(toastId.current);
@@ -110,105 +119,114 @@ function App() {
   };
 
   return (
-    <div className="App" style={{ overflowX: "scroll" }}>
-      <LTable
-        columns={columns}
-        onClickOrder={(value: string, direction: string) => {
-          test(value, direction);
-        }}
-      >
-        <tbody>
-          {rows.length > 0 &&
-            rows.map((row: any, idx: Key) => (
-              <tr key={row._id} className={row.status === true ? "table-success" : "table-warning"}>
-                <td width={"5%"}>{row._id}</td>
-                <td width={"20%"}>{row.author}</td>
-                <td width={"20%"}>{row.title}</td>
-                <td width={"5%"}>{row.year}</td>
-                <td width={"5%"}>{row.pages}</td>
-                <td width={"20%"}>{row.shortDescription}</td>
-                <td width={"10%"}>{row.status === true ? "Read" : "Not Read"}</td>
-                <td width={"5%"}>
-                  {row.packed === true ? (
-                    <i className="bi bi-check-circle text-success" style={{ fontSize: "1.5rem" }}></i>
-                  ) : (
-                    <i className="bi bi-x-square text-danger" style={{ fontSize: "1.5rem" }}></i>
-                  )}
-                </td>
-                <td width={"20%"}>
-                  <div className="btn-group" role="group" aria-label="Basic example">
-                    <LButton
-                      variant="outline-primary"
-                      type="button"
-                      toggle="modal"
-                      target="#createModal"
-                      icon="pencil-square"
-                      onClick={() => {
-                        selectRow(row);
-                      }}
-                    />
-                    <LButton
-                      variant="outline-primary"
-                      type="button"
-                      toggle="modal"
-                      target="#exampleModal"
-                      icon="eye"
-                      onClick={() => {
-                        selectRow(row);
-                      }}
-                    />
-                    <LButton
-                      variant="outline-danger"
-                      type="button"
-                      toggle="modal"
-                      target="#deleteModal"
-                      icon="trash"
-                      onClick={() => {
-                        selectRow(row);
-                      }}
-                    />
-                  </div>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </LTable>
-      <div className="container-fluid">
-        <div className="row align-items-start justify-content-start">
-          <div className="col-2">Total: {total}</div>
-          <div className="col-10">
-            <nav aria-label="Page navigation example">
-              <ul className="pagination">
-                {pages.map((page) => page)}
-                <li className="page-item">
-                  <select
-                    className="form-select"
-                    aria-label="Default select example"
-                    onChange={changePageSize} // Modifica: Rimuovi arrow function non necessaria
-                  >
-                    <option defaultValue={15}>15</option>
-                    <option value="20">20</option>
-                    <option value="30">30</option>
-                  </select>
-                </li>
-              </ul>
-            </nav>
+    <div className="container-fluid" style={{ overflowX: "scroll" }}>
+      <div className="row">
+        <div className="col-12 col-lg-9">
+          <LTable
+            columns={columns}
+            onClickOrder={(value: string, direction: string) => {
+              test(value, direction);
+            }}
+          >
+            <tbody>
+              {rows.length > 0 &&
+                rows.map((row: any, idx: Key) => (
+                  <tr key={row._id} className={row.status === true ? "table-success" : "table-warning"}>
+                    <td width={"5%"}>{row._id}</td>
+                    <td width={"20%"}>{row.author}</td>
+                    <td width={"20%"}>{row.title}</td>
+                    <td width={"5%"}>{row.year}</td>
+                    <td width={"5%"}>{row.pages}</td>
+                    <td width={"20%"}>{row.shortDescription}</td>
+                    <td width={"10%"}>{row.status === true ? "Read" : "Not Read"}</td>
+                    <td width={"5%"}>
+                      {row.packed === true ? (
+                        <i className="bi bi-check-circle text-success" style={{ fontSize: "1.5rem" }}></i>
+                      ) : (
+                        <i className="bi bi-x-square text-danger" style={{ fontSize: "1.5rem" }}></i>
+                      )}
+                    </td>
+                    <td width={"20%"}>
+                      <div className="btn-group" role="group" aria-label="Basic example">
+                        <LButton
+                          variant="outline-primary"
+                          type="button"
+                          toggle="modal"
+                          target="#createModal"
+                          icon="pencil-square"
+                          onClick={() => {
+                            selectRow(row);
+                          }}
+                        />
+                        <LButton
+                          variant="outline-primary"
+                          type="button"
+                          toggle="modal"
+                          target="#exampleModal"
+                          icon="eye"
+                          onClick={() => {
+                            selectRow(row);
+                          }}
+                        />
+                        <LButton
+                          variant="outline-danger"
+                          type="button"
+                          toggle="modal"
+                          target="#deleteModal"
+                          icon="trash"
+                          onClick={() => {
+                            selectRow(row);
+                          }}
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </LTable>
+          <div className="container-fluid">
+            <div className="row align-items-start justify-content-start">
+              <div className="col-2">Total: {total}</div>
+              <div className="col-10">
+                <nav aria-label="Page navigation example">
+                  <ul className="pagination">
+                    {pages.map((page) => page)}
+                    <li className="page-item">
+                      <select
+                        className="form-select"
+                        aria-label="Default select example"
+                        onChange={changePageSize} // Modifica: Rimuovi arrow function non necessaria
+                      >
+                        <option defaultValue={15}>15</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                      </select>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
           </div>
+          <LEditModal
+            id="createModal"
+            labelledby="createModalLabel"
+            data={selected}
+            onConfirm={() => retrieveData("_id", "down")}
+          />
+          <LModal id="exampleModal" labelledby="exampleModalLabel" data={selected} />
+          <LDeleteModal
+            id="deleteModal"
+            labelledby="deleteModalLabel"
+            _id={selected?._id}
+            onConfirm={() => retrieveData("_id", "down")}
+          />
         </div>
+        {total > 0 && countRead > 0 && (
+          <div className="col-12 col-lg-3">
+            <LChart read={countRead} packed={countPacked} max={total} />{" "}
+          </div>
+        )}
       </div>
-      <LEditModal
-        id="createModal"
-        labelledby="createModalLabel"
-        data={selected}
-        onConfirm={() => retrieveData("_id", "down")}
-      />
-      <LModal id="exampleModal" labelledby="exampleModalLabel" data={selected} />
-      <LDeleteModal
-        id="deleteModal"
-        labelledby="deleteModalLabel"
-        _id={selected?._id}
-        onConfirm={() => retrieveData("_id", "down")}
-      />
     </div>
   );
 }
