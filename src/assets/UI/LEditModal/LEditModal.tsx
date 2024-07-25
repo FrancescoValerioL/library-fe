@@ -130,7 +130,7 @@ const LEditModal = (props: ModalProps, { onConfirm }: any) => {
                     type="number"
                     className="form-control"
                     id="year"
-                    defaultValue={year}
+                    value={year}
                     onChange={(e) => setYear(+e.target.value)}
                   />
                   <label htmlFor="floatingInput">Year</label>
@@ -142,7 +142,7 @@ const LEditModal = (props: ModalProps, { onConfirm }: any) => {
                     type="number"
                     className="form-control"
                     id="pages"
-                    defaultValue={pages}
+                    value={pages}
                     onChange={(e) => setPages(+e.target.value)}
                   />
                   <label htmlFor="floatingInput">Pages</label>
@@ -169,7 +169,7 @@ const LEditModal = (props: ModalProps, { onConfirm }: any) => {
                   <textarea
                     className="form-control"
                     id="ldescription"
-                    rows={5}
+                    rows={15}
                     defaultValue={description}
                     onChange={(e) => setDescription(e.target.value)}
                   />
