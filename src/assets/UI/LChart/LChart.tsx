@@ -10,7 +10,7 @@ Chart.register(BarElement);
 
 const LChart = (props: any) => {
   const [chartData, setChartData] = useState({
-    labels: ["Packed", "Read"],
+    labels: ["Packed: " + props.packed, "Read: " + props.read],
     datasets: [
       {
         label: "Users Gained ",
@@ -22,7 +22,7 @@ const LChart = (props: any) => {
 
   return (
     <div className="chart-container">
-      <h2 style={{ textAlign: "center" }}>Packed/Read</h2>
+      <h3 style={{ textAlign: "center" }}>Total: {props.max}</h3>
       <Bar
         data={chartData}
         options={{
@@ -31,16 +31,8 @@ const LChart = (props: any) => {
               min: 0,
               max: props.max,
               ticks: {
-                // forces step size to be 50 units
                 stepSize: 1,
               },
-              /* pointLabels: {
-                display: true,
-                centerPointLabels: true,
-                font: {
-                  size: 15,
-                },
-              }, */
             },
           },
           plugins: {

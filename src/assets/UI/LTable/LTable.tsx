@@ -4,7 +4,7 @@ import "./LTable.scss";
 const LTable = (props: TableProps, { onClickOrder }: any) => {
   return (
     <div className="tableFixHead">
-      <table className={"table table-striped table-hover table-bordered align-middle table-" + props.variant}>
+      <table className={"table table-striped table-hover align-middle table-" + props.variant}>
         <thead>
           <tr>
             {props.columns.map((column, idx) => (

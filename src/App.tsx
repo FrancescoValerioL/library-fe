@@ -128,10 +128,10 @@ function App() {
               test(value, direction);
             }}
           >
-            <tbody>
+            <tbody className="table-group-divider">
               {rows.length > 0 &&
                 rows.map((row: any, idx: Key) => (
-                  <tr key={row._id} className={row.status === true ? "table-success" : "table-warning"}>
+                  <tr key={row._id} className={row.status === true ? "table-success" : "table-primary"}>
                     <td width={"5%"}>{row._id}</td>
                     <td width={"20%"}>{row.author}</td>
                     <td width={"20%"}>{row.title}</td>
@@ -185,9 +185,9 @@ function App() {
             </tbody>
           </LTable>
           <div className="container-fluid">
-            <div className="row align-items-start justify-content-start">
-              <div className="col-2">Total: {total}</div>
-              <div className="col-10">
+            <div className="row align-items-center justify-content-end">
+              <div className="col-2 d-flex align-items-center">Total: {total}</div>
+              <div className="col-10 d-flex justify-content-end">
                 <nav aria-label="Page navigation example">
                   <ul className="pagination">
                     {pages.map((page) => page)}

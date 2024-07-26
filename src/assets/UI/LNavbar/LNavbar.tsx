@@ -18,7 +18,7 @@ const Navbar = () => {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarNav" role="search">
-            <LButton variant="outline-primary" type="button" toggle="modal" target="#createModal" text="Create New" />
+            <LButton variant="primary" type="button" toggle="modal" target="#createModal" text="Create New" />
           </div>
         </div>
       </div>
