@@ -131,7 +131,7 @@ function App() {
             <tbody className="table-group-divider">
               {rows.length > 0 &&
                 rows.map((row: any, idx: Key) => (
-                  <tr key={row._id} className={row.status === true ? "table-success" : "table-primary"}>
+                  <tr key={row._id} className={row.status === true ? "table-success" : "table-secondary"}>
                     <td width={"5%"}>{row._id}</td>
                     <td width={"20%"}>{row.author}</td>
                     <td width={"20%"}>{row.title}</td>
@@ -227,6 +227,14 @@ function App() {
           </div>
         )}
       </div>
+      {/* <LButton variant="light" type="button" text="Color Test" />
+      <LButton variant="dark" type="button" text="Color Test" />
+      <LButton variant="primary" type="button" text="Color Test" />
+      <LButton variant="secondary" type="button" text="Color Test" />
+      <LButton variant="info" type="button" text="Color Test" />
+      <LButton variant="success" type="button" text="Color Test" />
+      <LButton variant="warning" type="button" text="Color Test" />
+      <LButton variant="danger" type="button" text="Color Test" /> */}
     </div>
   );
 }

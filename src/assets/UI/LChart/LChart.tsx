@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Bar, Pie, PolarArea } from "react-chartjs-2";
 import { Chart, ArcElement, RadialLinearScale, LinearScale, CategoryScale, BarElement } from "chart.js";
 import "./LChart.scss";
+import * as colors from "../../colors";
 Chart.register(ArcElement);
 Chart.register(RadialLinearScale);
 Chart.register(LinearScale);
@@ -15,7 +16,7 @@ const LChart = (props: any) => {
       {
         label: "Users Gained ",
         data: [props.packed, props.read],
-        backgroundColor: ["rgba(228, 90, 40,0.5)", "rgba(172, 198, 219,0.5)"],
+        backgroundColor: [colors.primary, colors.secondary], //["rgba(228, 90, 40,0.5)", "rgba(172, 198, 219,0.5)"],
       },
     ],
   });
