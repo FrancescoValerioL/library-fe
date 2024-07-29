@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as Toast from "../../../services/Toast";
 
-const LEditModal = (props: ModalProps, { onConfirm }: any) => {
+const LEditModal = (props: ModalProps) => {
   const [title, setTitle] = useState<string>("");
   const [author, setAuthor] = useState<string>("");
   const [year, setYear] = useState<number>(0);
@@ -22,12 +22,22 @@ const LEditModal = (props: ModalProps, { onConfirm }: any) => {
       setDescription(props.data.description);
       setStatus(props.data.status);
       setPacked(props.data.packed);
+    } else {
+      setTitle("");
+      setAuthor("");
+      setYear(0);
+      setPages(0);
+      setShortDescription("");
+      setDescription("");
+      setStatus(false);
+      setPacked(false);
     }
   }, [props]);
 
   const notifySuccess = () => (toastId.current = Toast.successToast("Book succesfully created", "colored", 3000));
 
-  const notifyError = () => (toastId.current = Toast.errorToast("Success", "colored", 3000));
+  const notifyError = (error?: string) =>
+    (toastId.current = Toast.errorToast(error !== undefined ? error : "Error", "colored", 3000));
 
   const confirm = () => {
     if (!props.data?._id) {
@@ -49,10 +59,15 @@ const LEditModal = (props: ModalProps, { onConfirm }: any) => {
         body: JSON.stringify(body),
       })
         .then((response) => {
-          notifySuccess();
+          console.log(response);
+          if (response.status === 200) {
+            notifySuccess();
+          } else {
+            notifyError(response.statusText);
+          }
           props.onConfirm();
         })
-        .catch((error) => notifyError());
+        .catch((error) => notifyError(error.message));
     } else {
       const body: Book = {
         _id: props.data._id,
@@ -80,6 +95,9 @@ const LEditModal = (props: ModalProps, { onConfirm }: any) => {
     }
   };
 
+  const close = () => {
+    props.onCloseModal();
+  };
   return (
     <div
       className="modal fade modal-lg"
@@ -97,119 +115,121 @@ const LEditModal = (props: ModalProps, { onConfirm }: any) => {
             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div className="modal-body">
-            <div className="row">
-              <div className="col">
-                <div className="form-floating mb-3">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="author"
-                    defaultValue={author}
-                    onChange={(e) => setAuthor(e.target.value)}
-                  />
-                  <label htmlFor="floatingInput">Author</label>
+            <form autoComplete="off">
+              <div className="row">
+                <div className="col">
+                  <div className="form-floating mb-3">
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="author"
+                      defaultValue={author}
+                      onChange={(e) => setAuthor(e.target.value)}
+                    />
+                    <label htmlFor="floatingInput">Author</label>
+                  </div>
+                </div>
+                <div className="col">
+                  <div className="form-floating mb-3">
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="title"
+                      defaultValue={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                    />
+                    <label htmlFor="floatingInput">Title</label>
+                  </div>
                 </div>
               </div>
-              <div className="col">
-                <div className="form-floating mb-3">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="title"
-                    defaultValue={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                  />
-                  <label htmlFor="floatingInput">Title</label>
+              <div className="row">
+                <div className="col">
+                  <div className="form-floating mb-3">
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="year"
+                      value={year}
+                      onChange={(e) => setYear(+e.target.value)}
+                    />
+                    <label htmlFor="floatingInput">Year</label>
+                  </div>
+                </div>
+                <div className="col">
+                  <div className="form-floating mb-3">
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="pages"
+                      value={pages}
+                      onChange={(e) => setPages(+e.target.value)}
+                    />
+                    <label htmlFor="floatingInput">Pages</label>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="row">
-              <div className="col">
-                <div className="form-floating mb-3">
-                  <input
-                    type="number"
-                    className="form-control"
-                    id="year"
-                    value={year}
-                    onChange={(e) => setYear(+e.target.value)}
-                  />
-                  <label htmlFor="floatingInput">Year</label>
+              <div className="row">
+                <div className="col">
+                  <div className="form-floating mb-3">
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="sdescription"
+                      defaultValue={shortDescription}
+                      onChange={(e) => setShortDescription(e.target.value)}
+                    />
+                    <label htmlFor="floatingInput">Short Description</label>
+                  </div>
                 </div>
               </div>
-              <div className="col">
-                <div className="form-floating mb-3">
-                  <input
-                    type="number"
-                    className="form-control"
-                    id="pages"
-                    value={pages}
-                    onChange={(e) => setPages(+e.target.value)}
-                  />
-                  <label htmlFor="floatingInput">Pages</label>
+              <div className="row">
+                <div className="col">
+                  <div className="form-floating mb-3">
+                    <textarea
+                      className="form-control"
+                      id="ldescription"
+                      rows={15}
+                      defaultValue={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                    />
+                    <label htmlFor="floatingInput">Long Description</label>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="row">
-              <div className="col">
-                <div className="form-floating mb-3">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="sdescription"
-                    defaultValue={shortDescription}
-                    onChange={(e) => setShortDescription(e.target.value)}
-                  />
-                  <label htmlFor="floatingInput">Short Description</label>
+              <div className="row">
+                <div className="col">
+                  <div className="form-check-inline">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="flexCheckDefault"
+                      checked={packed}
+                      onChange={(e) => setPacked(e.target.checked)}
+                    />
+                    <label className="form-check-label" htmlFor="flexCheckDefault">
+                      Packed?
+                    </label>
+                  </div>
+                  <div className="form-check-inline">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="flexCheckDefault"
+                      checked={status}
+                      onChange={(e) => setStatus(e.target.checked)}
+                    />
+                    <label className="form-check-label" htmlFor="flexCheckDefault">
+                      Read?
+                    </label>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="row">
-              <div className="col">
-                <div className="form-floating mb-3">
-                  <textarea
-                    className="form-control"
-                    id="ldescription"
-                    rows={15}
-                    defaultValue={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                  />
-                  <label htmlFor="floatingInput">Long Description</label>
-                </div>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col">
-                <div className="form-check-inline">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                    checked={packed}
-                    onChange={(e) => setPacked(e.target.checked)}
-                  />
-                  <label className="form-check-label" htmlFor="flexCheckDefault">
-                    Packed?
-                  </label>
-                </div>
-                <div className="form-check-inline">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                    checked={status}
-                    onChange={(e) => setStatus(e.target.checked)}
-                  />
-                  <label className="form-check-label" htmlFor="flexCheckDefault">
-                    Read?
-                  </label>
-                </div>
-              </div>
-            </div>
+            </form>
           </div>
           <div className="modal-footer">
-            <button type="button" className="btn btn-danger" data-bs-dismiss="modal">
+            <button type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={close}>
               Close
             </button>
             <button type="button" className="btn btn-success" onClick={confirm} data-bs-dismiss="modal">
@@ -225,6 +245,7 @@ export default LEditModal;
 
 interface ModalProps {
   onConfirm(): any;
+  onCloseModal(): any;
   id: string;
   bookId?: string;
   labelledby: string;

@@ -58,6 +58,10 @@ function App() {
       });
   };
 
+  const onCloseModal = () => {
+    setSelected(null);
+  };
+
   useEffect(() => {
     retrieveData("_id", "down");
   }, [currentPage, pageSize]); // Modifica: Rimuovi useEffect duplicato, combina tutto in uno
@@ -211,6 +215,7 @@ function App() {
             id="createModal"
             labelledby="createModalLabel"
             data={selected}
+            onCloseModal={onCloseModal}
             onConfirm={() => retrieveData("_id", "down")}
           />
           <LModal id="exampleModal" labelledby="exampleModalLabel" data={selected} />
