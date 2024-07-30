@@ -29,7 +29,7 @@ function App() {
 
   const notifySuccess = () => (toastId.current = Toast.defaultToast("Loading Data", "light", 3000));
 
-  const notifyError = () => (toastId.current = Toast.errorToast("Success", "colored", 3000));
+  const notifyError = () => (toastId.current = Toast.errorToast("Load Failed", "colored", 3000));
 
   const retrieveData = (value: string, direction: string) => {
     notifySuccess();
